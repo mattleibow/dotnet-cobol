@@ -1,0 +1,52 @@
+{
+  "COBOL program": {
+    "prefix": "program",
+    "body": [
+      "       IDENTIFICATION DIVISION.",
+      "       PROGRAM-ID. ${1:PROGRAM-NAME}.",
+      "",
+      "       DATA DIVISION.",
+      "       WORKING-STORAGE SECTION.",
+      "       01  ${2:MESSAGE} PIC X(${3:40}) VALUE \"${4:Hello, COBOL!}\".",
+      "",
+      "       PROCEDURE DIVISION.",
+      "           DISPLAY ${2:MESSAGE}",
+      "           GOBACK.",
+      "       END PROGRAM ${1:PROGRAM-NAME}."
+    ],
+    "description": "Create a complete COBOL program."
+  },
+  "Display": {
+    "prefix": "display",
+    "body": [
+      "           DISPLAY ${1:\"message\"}"
+    ],
+    "description": "Display a value."
+  },
+  "If statement": {
+    "prefix": "if",
+    "body": [
+      "           IF ${1:condition}",
+      "               ${2:DISPLAY \"true\"}",
+      "           ELSE",
+      "               ${3:DISPLAY \"false\"}",
+      "           END-IF"
+    ],
+    "description": "Create an IF / ELSE statement."
+  },
+  "Perform paragraph": {
+    "prefix": "perform",
+    "body": [
+      "           PERFORM ${1:paragraph-name}",
+      "           ${2:}"
+    ],
+    "description": "Perform a paragraph."
+  },
+  "Working-storage item": {
+    "prefix": "ws",
+    "body": [
+      "       ${1:01}  ${2:FIELD-NAME} PIC ${3:X(1)}${4: VALUE ${5:\" \"}}."
+    ],
+    "description": "Declare a working-storage data item."
+  }
+}

@@ -1,0 +1,5 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DIAGNOSTIC-TEST.
+       PROCEDURE DIVISION.
+           DISPLAY "test".
+           GOBACK.

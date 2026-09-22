@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <CobolMSBuildTaskAssembly Condition="'$(CobolMSBuildTaskAssembly)' == ''">$(MSBuildThisFileDirectory)..\lib\net10.0\Cobol.MSBuild.dll</CobolMSBuildTaskAssembly>
+  </PropertyGroup>
+  <UsingTask TaskName="Cobol.MSBuild.CobolCompile" AssemblyFile="$(CobolMSBuildTaskAssembly)" />
+  <Target Name="CompileCobol" BeforeTargets="CoreCompile" Condition="'@(CobolCompile)' != ''">
+    <CobolCompile Source="%(CobolCompile.FullPath)"
+                  OutputAssembly="$(IntermediateOutputPath)%(CobolCompile.Filename).dll"
+                  OutputLibrary="%(CobolCompile.OutputLibrary)" />
+  </Target>
+</Project>

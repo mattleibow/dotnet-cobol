@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet build DotNetCobol.sln --configuration Release
+      - run: dotnet run --project tests/Cobol.Tests/Cobol.Tests.csproj --configuration Release
+
+  vscode:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: editor/vscode-cobol
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: editor/vscode-cobol/package-lock.json
+      - run: npm ci
+      - run: npm run test:unit
+      - run: VSCODE_COBOL_TEST_USER_DATA_DIR=/tmp/cobol-vscode-user npm run test:integration
+      - run: npm run package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vscode-cobol-vsix
+          path: editor/vscode-cobol/dist/vscode-cobol.vsix

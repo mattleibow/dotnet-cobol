@@ -1,0 +1,10 @@
+<Project DefaultTargets="CompileCobol">
+  <PropertyGroup>
+    <IntermediateOutputPath>obj/</IntermediateOutputPath>
+    <CobolMSBuildTaskAssembly>$(MSBuildProjectDirectory)/../../src/Cobol.MSBuild/bin/Release/net10.0/Cobol.MSBuild.dll</CobolMSBuildTaskAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <CobolCompile Include="Account.cob" />
+  </ItemGroup>
+  <Import Project="../../src/Cobol.MSBuild/build/Cobol.MSBuild.targets" />
+</Project>

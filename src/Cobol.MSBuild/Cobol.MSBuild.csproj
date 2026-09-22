@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Cobol.MSBuild</AssemblyName>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cobol.Compiler\Cobol.Compiler.csproj" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="18.10.1" />
+    <None Include="build\**\*" Pack="true" PackagePath="build" />
+  </ItemGroup>
+</Project>

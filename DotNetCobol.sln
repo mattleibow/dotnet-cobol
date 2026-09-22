@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobol.Compiler", "src\Cobol.Compiler\Cobol.Compiler.csproj", "{A5E7C070-153A-4102-98CD-391E4458B0DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobol.Cli", "src\Cobol.Cli\Cobol.Cli.csproj", "{D5154F85-163B-45AF-88A7-D105582F2BCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobol.MSBuild", "src\Cobol.MSBuild\Cobol.MSBuild.csproj", "{6F565A1A-1CB7-44B9-872E-3FCB3DECD73B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobol.Tests", "tests\Cobol.Tests\Cobol.Tests.csproj", "{78133B5A-631B-455C-81C9-E14256726968}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5E7C070-153A-4102-98CD-391E4458B0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E7C070-153A-4102-98CD-391E4458B0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E7C070-153A-4102-98CD-391E4458B0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E7C070-153A-4102-98CD-391E4458B0DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5154F85-163B-45AF-88A7-D105582F2BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5154F85-163B-45AF-88A7-D105582F2BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5154F85-163B-45AF-88A7-D105582F2BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5154F85-163B-45AF-88A7-D105582F2BCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F565A1A-1CB7-44B9-872E-3FCB3DECD73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F565A1A-1CB7-44B9-872E-3FCB3DECD73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F565A1A-1CB7-44B9-872E-3FCB3DECD73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F565A1A-1CB7-44B9-872E-3FCB3DECD73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78133B5A-631B-455C-81C9-E14256726968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78133B5A-631B-455C-81C9-E14256726968}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78133B5A-631B-455C-81C9-E14256726968}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78133B5A-631B-455C-81C9-E14256726968}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

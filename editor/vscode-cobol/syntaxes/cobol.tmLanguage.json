@@ -1,0 +1,109 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "COBOL",
+  "scopeName": "source.cobol",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#divisions"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#picture"
+    },
+    {
+      "match": "\\b[A-Za-z][A-Za-z0-9-]*\\b",
+      "name": "variable.other.cobol"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "match": "^.{6}\\*.*$|\\*>.*$",
+          "name": "comment.line.cobol"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "begin": "\"",
+          "end": "\"",
+          "name": "string.quoted.double.cobol",
+          "patterns": [
+            {
+              "match": "\"\"",
+              "name": "constant.character.escape.cobol"
+            }
+          ]
+        },
+        {
+          "begin": "'",
+          "end": "'",
+          "name": "string.quoted.single.cobol",
+          "patterns": [
+            {
+              "match": "''",
+              "name": "constant.character.escape.cobol"
+            }
+          ]
+        }
+      ]
+    },
+    "divisions": {
+      "patterns": [
+        {
+          "match": "\\b(?:IDENTIFICATION|ENVIRONMENT|DATA|PROCEDURE)\\s+DIVISION\\b",
+          "name": "entity.name.section.cobol"
+        },
+        {
+          "match": "\\b(?:CONFIGURATION|INPUT-OUTPUT|FILE|WORKING-STORAGE|LOCAL-STORAGE|LINKAGE)\\s+SECTION\\b",
+          "name": "entity.name.section.cobol"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(?:ACCEPT|ADD|CALL|CLOSE|COMPUTE|CONTINUE|DISPLAY|DIVIDE|ELSE|END-IF|END-PERFORM|END-PROGRAM|EVALUATE|EXIT|GOBACK|IF|INITIALIZE|INSPECT|MOVE|MULTIPLY|OPEN|PERFORM|READ|RETURN|REWRITE|SEARCH|SET|STOP|STRING|SUBTRACT|UNSTRING|WHEN|WRITE)\\b",
+          "name": "keyword.control.cobol"
+        },
+        {
+          "match": "\\b(?:PROGRAM-ID|AUTHOR|DATE-WRITTEN|SELECT|ASSIGN|ORGANIZATION|FD|PIC|PICTURE|VALUE|OCCURS|REDEFINES|USAGE|COMP-3|COPY)\\b",
+          "name": "keyword.other.cobol"
+        },
+        {
+          "match": "\\b(?:TRUE|FALSE|HIGH-VALUES|LOW-VALUES|SPACES|ZEROES|ZEROS)\\b",
+          "name": "constant.language.cobol"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "\\b[+-]?(?:\\d+(?:\\.\\d+)?|\\.\\d+)\\b",
+          "name": "constant.numeric.cobol"
+        }
+      ]
+    },
+    "picture": {
+      "patterns": [
+        {
+          "match": "\\b[XS9ZV+\\-*,/()]+(?:\\([0-9]+\\))?\\b",
+          "name": "string.other.picture.cobol"
+        }
+      ]
+    }
+  }
+}
