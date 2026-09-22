@@ -12,7 +12,7 @@
 | I-O and records | Not implemented | `SELECT`, FD/SD, sequential/indexed/relative organization and record-layout compatibility |
 | Enterprise integrations | Not implemented | Vendor-gated CICS, IMS, Db2/embedded SQL, copybook and precompiler strategies |
 | Code generation | Roslyn-backed bootstrap PE/PDB backend; deterministic bytes, managed entry point/MVID, PDB documents/sequence point blobs tested | Direct IL/metadata writer, COBOL source debug sequence points, runtime ABI, optimizations |
-| Tooling | CLI, initial MSBuild task, syntax extension | LSP, incremental workspace, diagnostics/code actions, debugger support |
+| Tooling | CLI, initial MSBuild task, VS Code grammar/snippets, packageable VSIX, and compiler-backed save/on-demand diagnostics bridge validated in an isolated extension host | JSON-RPC LSP, document symbols/hover, incremental workspace, diagnostics/code actions, debugger support |
 | Roslyn/upstream readiness | Architectural inspiration only | API review, performance/cancellation model, incremental green trees, IDE test matrix, contributor governance |
 
 ## Planned phases

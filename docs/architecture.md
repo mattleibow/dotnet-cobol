@@ -33,7 +33,7 @@ This is not a source-to-source product surface: the compiler owns parsing, diagn
 
 * `cobolc input.cob [-o output.dll] [--library]` is the command line.
 * `Cobol.MSBuild.CobolCompile` compiles a source item and is accompanied by `build/Cobol.MSBuild.targets` for package integration.
-* `editor/vscode-cobol` contains language IDs, grammar, snippets, configuration diagnostics, and a deliberately non-launching LSP hand-off point.
+* `editor/vscode-cobol` contains language IDs, TextMate grammar, snippets, editing configuration, and a compiler-backed diagnostics bridge. It invokes `cobolc` without a shell after save or the explicit validation command, maps parsed locations back to saved or staged unsaved documents, and exposes diagnostics through the VS Code collection API. It is not yet a JSON-RPC LSP server; document symbols, hover, completion, navigation, and rename remain future LSP work.
 
 ## Explicit current gaps
 

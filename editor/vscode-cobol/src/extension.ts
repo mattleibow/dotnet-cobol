@@ -1,85 +1,62 @@
-"use strict";
+import * as vscode from "vscode";
+import { CobolCompilerBridge } from "./compilerBridge";
+import { CompilerSettings } from "./compilerSettings";
 
-let configurationDiagnostics;
-let configurationChangeSubscription;
+const diagnosticSource = "cobolc";
 
-function isCobolDocument(document) {
+function isCobolDocument(document: vscode.TextDocument): boolean {
   return document.languageId === "cobol";
 }
 
-function refreshConfigurationDiagnostic(vscode, document) {
-  if (!isCobolDocument(document)) {
-    return;
-  }
-
-  const configuration = vscode.workspace.getConfiguration("cobol", document.uri);
-  if (!configuration.get("diagnostics.configuration", true)) {
-    configurationDiagnostics.delete(document.uri);
-    return;
-  }
-
-  const command = configuration.get("lsp.command", "").trim();
-  if (!command) {
-    configurationDiagnostics.delete(document.uri);
-    return;
-  }
-
-  const message =
-    "cobol.lsp.command is configured, but this extension does not include or launch a language server.";
-  const range = new vscode.Range(0, 0, 0, 0);
-  const diagnostic = new vscode.Diagnostic(
-    range,
-    message,
-    vscode.DiagnosticSeverity.Information
-  );
-  diagnostic.source = "COBOL";
-  configurationDiagnostics.set(document.uri, [diagnostic]);
-}
-
-function refreshOpenCobolDocuments(vscode) {
-  for (const document of vscode.workspace.textDocuments) {
-    refreshConfigurationDiagnostic(vscode, document);
-  }
-}
-
-function readLspConfiguration(vscode, resource) {
+function readCompilerSettings(resource: vscode.Uri): CompilerSettings {
   const configuration = vscode.workspace.getConfiguration("cobol", resource);
   return {
-    command: configuration.get("lsp.command", "").trim()
+    enabled: configuration.get<boolean>("diagnostics.enabled", true),
+    command: configuration.get<string>("compiler.path", "cobolc").trim(),
+    arguments: configuration.get<string[]>("compiler.arguments", []),
+    timeoutMs: configuration.get<number>("compiler.timeout", 10_000)
   };
 }
 
-function activate(context) {
-  const vscode = require("vscode");
-  configurationDiagnostics = vscode.languages.createDiagnosticCollection("cobol-configuration");
-  context.subscriptions.push(configurationDiagnostics);
-
-  refreshOpenCobolDocuments(vscode);
-  context.subscriptions.push(
-    vscode.workspace.onDidOpenTextDocument((document) =>
-      refreshConfigurationDiagnostic(vscode, document)
-    )
-  );
-
-  configurationChangeSubscription = vscode.workspace.onDidChangeConfiguration((event) => {
-    if (event.affectsConfiguration("cobol")) {
-      refreshOpenCobolDocuments(vscode);
-    }
+export function activate(context: vscode.ExtensionContext): void {
+  const diagnostics = vscode.languages.createDiagnosticCollection(diagnosticSource);
+  const bridge = new CobolCompilerBridge({
+    diagnostics,
+    globalStorageUri: context.globalStorageUri,
+    getSettings: readCompilerSettings,
+    showError: (message) => void vscode.window.showErrorMessage(message)
   });
-  context.subscriptions.push(configurationChangeSubscription);
+
+  context.subscriptions.push(
+    diagnostics,
+    vscode.commands.registerTextEditorCommand("cobol.validate", (editor) => {
+      void bridge.validate(editor.document);
+    }),
+    vscode.workspace.onDidSaveTextDocument((document) => {
+      const configuration = vscode.workspace.getConfiguration("cobol", document.uri);
+      if (isCobolDocument(document) && configuration.get<boolean>("diagnostics.onSave", true)) {
+        void bridge.validate(document);
+      }
+    }),
+    vscode.workspace.onDidCloseTextDocument((document) => diagnostics.delete(document.uri)),
+    vscode.workspace.onDidChangeConfiguration((event) => {
+      if (event.affectsConfiguration("cobol")) {
+        for (const document of vscode.workspace.textDocuments) {
+          if (isCobolDocument(document)) {
+            const configuration = vscode.workspace.getConfiguration("cobol", document.uri);
+            if (!configuration.get<boolean>("diagnostics.enabled", true)) {
+              diagnostics.delete(document.uri);
+            } else {
+              void bridge.validate(document);
+            }
+          }
+        }
+      }
+    }),
+    { dispose: () => bridge.dispose() }
+  );
 }
 
-function deactivate() {
-  if (configurationChangeSubscription) {
-    configurationChangeSubscription.dispose();
-  }
-  if (configurationDiagnostics) {
-    configurationDiagnostics.dispose();
-  }
+export function deactivate(): void {
+  // All resources are registered in the extension context.
 }
-
-module.exports = {
-  activate,
-  deactivate,
-  readLspConfiguration
-};

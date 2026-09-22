@@ -1,30 +1,49 @@
 {
   "name": "vscode-cobol",
   "displayName": "COBOL",
-  "description": "Language support and editor scaffolding for COBOL.",
-  "version": "0.1.0",
+  "description": "Syntax highlighting, snippets, and compiler diagnostics for COBOL.",
+  "version": "0.2.0",
   "publisher": "mattleibow",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mattleibow/dotnet-cobol.git"
+  },
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.137.0"
   },
   "categories": [
     "Programming Languages",
-    "Snippets"
+    "Snippets",
+    "Linters"
   ],
   "keywords": [
     "COBOL",
-    "mainframe"
+    "mainframe",
+    "compiler"
   ],
-  "main": "./out/extension.js",
+  "main": "./out/src/extension.js",
   "activationEvents": [
-    "onLanguage:cobol"
+    "onLanguage:cobol",
+    "onCommand:cobol.validate"
+  ],
+  "files": [
+    "out/src/**",
+    "syntaxes/**",
+    "snippets/**",
+    "language-configuration.json",
+    "LICENSE",
+    "README.md",
+    "package.json"
   ],
   "scripts": {
-    "build": "node ./scripts/build.mjs",
-    "typecheck": "npm run build && node --check ./out/extension.js",
-    "validate": "node ./scripts/validate-extension.mjs",
-    "package": "npm run typecheck && npm run validate"
+    "clean": "node ./scripts/clean.mjs",
+    "compile": "npm run clean && tsc -p ./tsconfig.json",
+    "vscode:prepublish": "tsc -p ./tsconfig.json",
+    "test:unit": "npm run compile && node --test out/test/unit/contributions.test.js out/test/unit/compilerBridge.test.js",
+    "test:integration": "npm run compile && node ./out/test/runTest.js",
+    "validate": "npm run test:unit",
+    "package": "npm run validate && mkdir -p ./dist && npm exec -- vsce package --out ./dist/vscode-cobol.vsix"
   },
   "contributes": {
     "languages": [
@@ -59,22 +78,57 @@
         "path": "./snippets/cobol.code-snippets"
       }
     ],
+    "commands": [
+      {
+        "command": "cobol.validate",
+        "title": "COBOL: Validate Active File"
+      }
+    ],
     "configuration": {
       "title": "COBOL",
       "properties": {
-        "cobol.diagnostics.configuration": {
+        "cobol.diagnostics.enabled": {
           "type": "boolean",
           "default": true,
           "scope": "resource",
-          "description": "Reports informational diagnostics for COBOL extension configuration."
+          "description": "Enable diagnostics produced by the configured COBOL compiler."
         },
-        "cobol.lsp.command": {
-          "type": "string",
-          "default": "",
+        "cobol.diagnostics.onSave": {
+          "type": "boolean",
+          "default": true,
           "scope": "resource",
-          "description": "Reserved for a future external COBOL language-server integration. This extension does not launch this command."
+          "description": "Validate COBOL files after they are saved."
+        },
+        "cobol.compiler.path": {
+          "type": "string",
+          "default": "cobolc",
+          "scope": "resource",
+          "description": "Path or command name for the cobolc compiler executable."
+        },
+        "cobol.compiler.arguments": {
+          "type": "array",
+          "default": [],
+          "scope": "resource",
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional arguments passed to cobolc before the source file path."
+        },
+        "cobol.compiler.timeout": {
+          "type": "number",
+          "default": 10000,
+          "minimum": 1000,
+          "scope": "resource",
+          "description": "Maximum time, in milliseconds, to wait for cobolc."
         }
       }
     }
+  },
+  "devDependencies": {
+    "@types/node": "^26.5.1",
+    "@types/vscode": "^1.137.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.0.0",
+    "typescript": "^7.0.2"
   }
 }
