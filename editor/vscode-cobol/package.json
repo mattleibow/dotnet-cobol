@@ -1,0 +1,80 @@
+{
+  "name": "vscode-cobol",
+  "displayName": "COBOL",
+  "description": "Language support and editor scaffolding for COBOL.",
+  "version": "0.1.0",
+  "publisher": "mattleibow",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "COBOL",
+    "mainframe"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:cobol"
+  ],
+  "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "typecheck": "npm run build && node --check ./out/extension.js",
+    "validate": "node ./scripts/validate-extension.mjs",
+    "package": "npm run typecheck && npm run validate"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "cobol",
+        "aliases": [
+          "COBOL",
+          "cobol"
+        ],
+        "extensions": [
+          ".cbl",
+          ".cob",
+          ".cobol",
+          ".cpy"
+        ],
+        "filenames": [
+          "COPYLIB"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cobol",
+        "scopeName": "source.cobol",
+        "path": "./syntaxes/cobol.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "cobol",
+        "path": "./snippets/cobol.code-snippets"
+      }
+    ],
+    "configuration": {
+      "title": "COBOL",
+      "properties": {
+        "cobol.diagnostics.configuration": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "Reports informational diagnostics for COBOL extension configuration."
+        },
+        "cobol.lsp.command": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "Reserved for a future external COBOL language-server integration. This extension does not launch this command."
+        }
+      }
+    }
+  }
+}
